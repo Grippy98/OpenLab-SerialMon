@@ -5,3 +5,4 @@ package-lock.json
 config.json
 
 *.log
+/serial-monitor/node_modules
