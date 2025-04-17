@@ -1,0 +1,7 @@
+*.log
+/serial-monnitor/node_modules
+/serial-monnitor/logs
+package-lock.json
+config.json
+
+*.log

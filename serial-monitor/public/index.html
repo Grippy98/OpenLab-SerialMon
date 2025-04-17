@@ -67,21 +67,43 @@
       color: var(--text);
     }
     #terminals {
+      position: relative;
       display: flex;
       flex-wrap: wrap;
-      gap: 1rem;
+      width: 100%;
       height: calc(100vh - 220px);
       overflow: auto;
     }
     .terminal-wrapper {
-      width: 45%;
-      height: 400px; /* fixed height */
-      position: relative;
+      position: absolute;
+      width: 48%; /* Default width */
+      height: 400px; /* Default height */
       border: 1px solid #ccc;
       border-radius: 4px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: box-shadow 0.3s;
+    }
+    .terminal-wrapper:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    /* Terminal specific layout classes */
+    .terminal-wrapper.fullscreen {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 1000;
+      border-radius: 0;
+    }
+    .terminal-wrapper.split-h {
+      width: 100%;
+    }
+    .terminal-wrapper.split-v {
+      height: 80%;
     }
     .title-bar {
       display: flex;
@@ -90,6 +112,8 @@
       background: var(--primary-light);
       color: #fff;
       padding: 0.5rem 1rem;
+      cursor: move; /* Indicate draggable */
+      user-select: none; /* Prevent text selection during drag */
     }
     .button-group {
       display: flex;
@@ -106,6 +130,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      z-index: 10; /* Ensure buttons are clickable */
     }
     .layout-btn:hover, .download-btn:hover, .close-btn:hover {
       background: rgba(255,255,255,0.2);
@@ -141,6 +166,15 @@
     .error-panel div {
       margin-bottom: 0.25rem;
     }
+    /* Snapping indicator */
+    .snap-indicator {
+      position: fixed;
+      background: rgba(77, 182, 172, 0.3);
+      border: 2px dashed var(--primary-light);
+      pointer-events: none;
+      z-index: 999;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -166,6 +200,7 @@
     </div>
     <div id="terminals"></div>
     <div id="errorPanel" class="error-panel" style="display:none;"></div>
+    <div class="snap-indicator" id="snapIndicator"></div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>

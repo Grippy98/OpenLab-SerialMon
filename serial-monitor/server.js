@@ -13,7 +13,7 @@ const CONFIG_PATH = Path.join(__dirname, 'config.json');
 const LOGS_DIR = Path.join(__dirname, 'logs');
 fs.ensureDirSync(LOGS_DIR);
 
-let config = { ports: [] };
+let config = { ports: [], layout: [] };
 if (fs.existsSync(CONFIG_PATH)) config = fs.readJsonSync(CONFIG_PATH);
 
 const ports = new Map();
